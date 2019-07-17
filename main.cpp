@@ -1,75 +1,51 @@
 #include <iostream>
 #include <cmath>
 #include <array>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
-void DrawMap(int heroPositionR, int heroPositionC, char gameMap[5][5])
-{
-    for (int r = 0; r < 5; r++)
-    {
-        for (int c = 0; c < 5; c++)
-        {
-            if (r != heroPositionC)
-            {
-                cout << gameMap[c][r] << " ";
-            }
-            else
-            {
-                if (c != heroPositionR)
-                {
-                    cout << gameMap[c][r] << " ";
-                }
-                else
-                {
-                    cout << 'H'<< " ";
-                }
-            }
-        }
-        cout << endl;
-    }
-};
-
 int main()
 {
-    int heroPositionR = 0;
-    int heroPositionC = 0;
-    bool isGameOver = false;
-    char input = ' ';
-    char map[5][5] = {
-        {'1', '1', '1', '1', '1'},
-        {'1', '1', '1', '1', '1'},
-        {'1', '1', '1', '1', '1'},
-        {'1', '1', '1', '1', '1'},
-        {'1', '1', '1', '1', '1'}};
+    ofstream MyFile("data/GameData.txt");
+    string playerName = "";
 
-    DrawMap(heroPositionR, heroPositionC, map);
-
-    while (!isGameOver)
+    if(MyFile.is_open())
     {
-        cin >> input;
+        MyFile << "Hello ";
+        MyFile << "jajajaja" << endl;
+        cout << "What's your name? " << endl;
+        cin >> playerName;
+        MyFile << playerName << endl;
+        MyFile << "jajajaja" << endl;
+        MyFile << "other words" << endl;
 
-        switch (input)
-        {
-        case 'd':
-            heroPositionR++;
-            break;
-        case 'a':
-            heroPositionR--;
-            break;
-        case 's':
-            heroPositionC++;
-            break;
-        case 'w':
-            heroPositionC--;
-            break;
-        case 'p':
-            isGameOver = true;
-            break;
-
-        default:
-            break;
-        }
-        DrawMap(heroPositionR, heroPositionC, map);
+        
     }
+    MyFile.close();
+
+    ifstream OtherFile("data/GameData.txt");
+    string line;
+    string name;
+    int lineName = 0;
+
+    if (OtherFile.is_open())
+    {
+        while (getline(OtherFile, line))
+        {
+            lineName++;
+            if(lineName == 2)
+            {
+                name = line;
+            }
+        }
+        
+    }
+    else
+    {
+        cout << "error to open file"<< endl;
+    }
+    
+     cout << "Welcome " << name << "!" << endl;
 }
