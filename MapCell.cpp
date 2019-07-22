@@ -19,6 +19,15 @@ int MapCell::GetId()
 {
     return id;
 }
+bool MapCell::IsBlocked()
+{
+    bool isBlocked = false;
+    if(id == 1)
+    {
+        isBlocked = true;
+    }
+    return isBlocked;
+}
 
 MapCell::~MapCell()
 {

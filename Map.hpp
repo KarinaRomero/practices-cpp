@@ -20,7 +20,7 @@ protected:
 public:
     Map();
     void Draw();
-    void SetPayerCell(int playerX, int playerY);
+    bool SetPayerCell(int playerX, int playerY);
     void CreateMap(std::string fileUrl);
     ~Map();
 

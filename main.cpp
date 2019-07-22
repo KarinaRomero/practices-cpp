@@ -21,8 +21,12 @@ int main()
    while (!isGameOver)
    {
       player.CallInput();
-      map.SetPayerCell(player.GetPositionX(), player.GetPositionY());
+      if(!map.SetPayerCell(player.GetPositionX(), player.GetPositionY()))
+      {
+         player.ResetToSafePosition();
+      }
       map.Draw();
+      
    }
    
    return 0;

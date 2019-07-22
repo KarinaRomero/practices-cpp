@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map(/* args */)
+Map::Map()
 {
     playerCell = NULL;
 }
@@ -23,14 +23,23 @@ void Map::Draw()
         std::cout << std::endl;
     }
 }
-void Map::SetPayerCell(int playerX, int playerY)
+bool Map::SetPayerCell(int playerX, int playerY)
 {
-    if (playerCell != NULL)
+    bool success = true;
+    if(!cells[playerY][playerX].IsBlocked())
     {
-        playerCell->SetId(0);
+        if (playerCell != NULL)
+        {
+            playerCell->SetId(0);
+        }
+        playerCell = &cells[playerY][playerX];
+        playerCell->SetId(5);
     }
-    playerCell = &cells[playerY][playerX];
-    playerCell->SetId(5);
+    else
+    {
+        success = false;
+    }
+    return success;
 }
 
 void Map::WriteMap(std::string fileUrl)
