@@ -10,13 +10,15 @@
 
 int main()
 {
-   std::string const static url = "data/GameData.txt";
+   std::string const static mapUrl = "data/GameData.txt";
+   std::string const introUrl = "data/GameIntro.txt";
    bool isGameOver = false;
    int *arrar= NULL;
    Map map;
    Player player;
 
-   map.CreateMap(url);
+   map.LoadMap(mapUrl);
+   //map.LoadIntro(introUrl);
 
    while (!isGameOver)
    {

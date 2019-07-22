@@ -11,7 +11,7 @@ void Map::Draw()
     {
         for (int col = 0; col < cols; col++)
         {
-            if (cells[row][col].GetId() == 1 || cells[row][col].GetId() == 5)
+            if (cells[row][col].GetId() == 1 || cells[row][col].GetId() == 5 || cells[row][col].GetId() == 8)
             {
                 std::cout << cells[row][col].GetId();
             }
@@ -26,14 +26,21 @@ void Map::Draw()
 bool Map::SetPayerCell(int playerX, int playerY)
 {
     bool success = true;
-    if(!cells[playerY][playerX].IsBlocked())
+    if (!cells[playerY][playerX].IsBlocked())
     {
-        if (playerCell != NULL)
+        if (cells[playerY][playerX].GetId() == 8)
         {
-            playerCell->SetId(0);
+            std::cout << "VICTORY!!!" << std::endl;
         }
-        playerCell = &cells[playerY][playerX];
-        playerCell->SetId(5);
+        else
+        {
+            if (playerCell != NULL)
+            {
+                playerCell->SetId(0);
+            }
+            playerCell = &cells[playerY][playerX];
+            playerCell->SetId(5);
+        }
     }
     else
     {
@@ -42,25 +49,55 @@ bool Map::SetPayerCell(int playerX, int playerY)
     return success;
 }
 
-void Map::WriteMap(std::string fileUrl)
+void Map::WriteData(std::string fileUrl, int type)
 {
-    char const static level[rows][cols] = {
-        {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '1', '1', '1', '1', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '1', '1', '1', '1', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '1', '1', '1', '1', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-    };
+    std::array<std::array<char, cols>, rows> dataArray;
+    std::array<std::array<char, cols>, rows> mapData =
+        {{{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '1', '1', '1', '1', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '1', '1', '1', '1', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+          {'1', '1', '1', '1', '1', '0', '0', '0', '0', '1'},
+          {'1', '0', '0', '0', '8', '0', '0', '0', '0', '1'},
+          {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}}};
+    std::array<std::array<char, cols>, rows> introData =
+        {{{'1', '0', '0', '1', '0', '1', '1', '1', '1', '1'},
+          {'1', '0', '0', '1', '0', '0', '0', '1', '0', '0'},
+          {'1', '1', '1', '1', '0', '0', '0', '1', '0', '0'},
+          {'1', '0', '0', '1', '0', '0', '0', '1', '0', '0'},
+          {'1', '0', '0', '1', '0', '1', '1', '1', '1', '1'},
+          {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0'},
+          {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0'},
+          {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
+          {'1', '1', '1', '0', '0', '1', '0', '0', '1', '1'},
+          {'1', '1', '1', '0', '0', '1', '0', '0', '1', '1'},
+          {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
+          {'1', '1', '1', '0', '0', '0', '0', '0', '1', '1'},
+          {'1', '1', '1', '1', '0', '0', '0', '1', '1', '1'},
+          {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
+          {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}}};
+
+    // 1 to write intro, 2 for write map
+    switch (type)
+    {
+    case 1:
+        dataArray = introData;
+        break;
+    case 2:
+        dataArray = mapData;
+        break;
+    default:
+        break;
+    }
+
     std::ofstream fileToWrite(fileUrl);
     std::string line = "";
     if (fileToWrite.is_open())
@@ -69,7 +106,7 @@ void Map::WriteMap(std::string fileUrl)
         {
             for (int col = 0; col < cols; col++)
             {
-                line += level[row][col];
+                line += dataArray[row][col];
                 line += ' ';
             }
             fileToWrite << line;
@@ -79,7 +116,7 @@ void Map::WriteMap(std::string fileUrl)
     }
 }
 
-void Map::ReadMap(std::string fileUrl)
+void Map::ReadData(std::string fileUrl, int type)
 {
     std::ifstream fileToRead(fileUrl);
     std::string line = "";
@@ -108,14 +145,19 @@ void Map::ReadMap(std::string fileUrl)
     }
     else
     {
-        WriteMap(fileUrl);
-        ReadMap(fileUrl);
+        WriteData(fileUrl, type);
+        ReadData(fileUrl, type);
     }
 }
 
-void Map::CreateMap(std::string fileUrl)
+void Map::LoadIntro(std::string fileUrl)
 {
-    ReadMap(fileUrl);
+    ReadData(fileUrl, 1);
+}
+
+void Map::LoadMap(std::string fileUrl)
+{
+    ReadData(fileUrl, 2);
 }
 
 Map::~Map()
