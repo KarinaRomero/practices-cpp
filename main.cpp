@@ -17,8 +17,15 @@ int main()
    Map map;
    Player player;
 
+   map.LoadIntro(introUrl);
+   map.Draw();
+
    map.LoadMap(mapUrl);
-   //map.LoadIntro(introUrl);
+   std::cout << std::endl;
+   std::cout << "You must reach the 8 number and skip 4 numbers on the map" << std::endl;
+   std::cout << "Press D to start, after Enter! " << std::endl;
+   map.Draw();
+   
 
    while (!isGameOver)
    {
@@ -28,7 +35,7 @@ int main()
          player.ResetToSafePosition();
       }
       map.Draw();
-      
+      std::cout << "To move you should press |  A ←  |  D →  |  W ↑  |  S ↓  |, after Enter " << std::endl;
    }
    
    return 0;
